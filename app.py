@@ -8,7 +8,7 @@ import os
 load_dotenv()
 
 app = Flask(__name__)
-model = whisper.load_model("large")
+model = whisper.load_model("base")
 
 DEEPL_API_KEY = os.getenv("DEEPL_API_KEY")
 
