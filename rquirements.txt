@@ -1,0 +1,5 @@
+Flask
+python-dotenv
+requests
+openai-whisper
+torch

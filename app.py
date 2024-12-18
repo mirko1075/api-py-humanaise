@@ -1,9 +1,16 @@
 from flask import Flask, request, jsonify
 import whisper
 import requests
+from dotenv import load_dotenv
+import os
+
+# Load environment variables
+load_dotenv()
 
 app = Flask(__name__)
 model = whisper.load_model("large")
+
+DEEPL_API_KEY = os.getenv("DEEPL_API_KEY")
 
 @app.route("/transcribe", methods=["POST"])
 def transcribe():
@@ -18,7 +25,7 @@ def translate():
     text = request.json.get("text")
     target_lang = request.json.get("target_lang", "EN")
     deepl_api_url = "https://api-free.deepl.com/v2/translate"
-    headers = {"Authorization": "Bearer 86fca7a3-53f6-448c-9f68-fa99af0175ab:fx"}
+    headers = {"Authorization": f"Bearer {DEEPL_API_KEY}"}
     data = {"text": text, "target_lang": target_lang}
     response = requests.post(deepl_api_url, headers=headers, data=data)
     return response.json()
