@@ -14,9 +14,20 @@ DEEPL_API_KEY = os.getenv("DEEPL_API_KEY")
 
 @app.route("/transcribe", methods=["POST"])
 def transcribe():
+    if "file" not in request.files:
+        return jsonify({"error": "No file part in the request"}), 400
+
     file = request.files["file"]
+
+    # Ensure the file is not empty
+    if file.filename == "":
+        return jsonify({"error": "No selected file"}), 400
+
+    # Save the file temporarily
     audio_path = f"/tmp/{file.filename}"
     file.save(audio_path)
+
+    # Perform transcription
     result = model.transcribe(audio_path)
     return jsonify({"transcription": result["text"]})
 
